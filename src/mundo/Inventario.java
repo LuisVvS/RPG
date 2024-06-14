@@ -1,16 +1,17 @@
 package mundo;
 
+import java.util.ArrayList;
+
 public class Inventario {
     protected Armas arma;
     protected int pocao;
     
 
-    public Inventario(Armas arma, int pocao){
-        this.arma=arma;
+    public Inventario(int pocao){
         this.pocao=pocao;
     }
-
-    public void mostra(){
+    
+    public void Acessar(){
         System.out.println("-----Inventario do player-----");
         System.out.println("_______________________________");
         System.out.println("Arma: " + this.arma);

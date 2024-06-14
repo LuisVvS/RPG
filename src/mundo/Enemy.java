@@ -9,7 +9,7 @@ public class Enemy extends Player {
     }
 
     public String toString(){
-        return "O inimigo: "+ this.nome + " vida: " + this.vida;
+        return "\nO inimigo: "+ this.nome + " vida: " + this.vida;
     }
 
     public void setVida(int vida){
@@ -20,7 +20,8 @@ public class Enemy extends Player {
     }
     
     public void atacar(int d,Player n){
-        System.out.printf("O player %s está atacando", this.nome);
+        System.out.printf("O %s está atacando e causou %d de dano \n", this.nome, d);
+
         n.setVida(n.getVida()-d);
     }
 }
