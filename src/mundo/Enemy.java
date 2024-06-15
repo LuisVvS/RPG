@@ -5,7 +5,7 @@ import java.util.*;
 public class Enemy extends Player {
     
     public Enemy(String nome, int level, int vida){
-        super(nome, vida, level );
+        super(nome,level, vida );
     }
 
     public String toString(){
@@ -23,5 +23,17 @@ public class Enemy extends Player {
         System.out.printf("O %s está atacando e causou %d de dano \n", this.nome, d);
 
         n.setVida(n.getVida()-d);
+    }
+
+    @Override
+    public String tela(){
+        if(this.vida <= 0){
+            return"\n#####\n" 
+                + "O " + this.nome + " esta morto!\n" + 
+            "######";
+
+        }else{
+            return ""; 
+        }
     }
 }

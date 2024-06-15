@@ -34,6 +34,16 @@ public class Player {
             System.out.println("O player não tem pocoes para se curar! \n pocoes podem ser compradas com mercadores");
         }
     }
+    
+    public String tela(){
+        if(this.vida <= 0){
+            return"\n#####\n" 
+                + "O player " + this.nome + " esta morto!\n" + 
+            "######";
+        }else{
+            return ""; 
+        }
+    }
 
 
     public String toString(){
