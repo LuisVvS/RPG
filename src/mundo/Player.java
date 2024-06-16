@@ -15,6 +15,9 @@ public class Player {
          System.out.println("###########################################");        
         System.out.printf("O player %s está atacando e deu %d de dano \n", this.nome, d);
         n.setVida(n.getVida()-d);
+        if(n.getVida() < 0){
+            n.setVida(0);
+        }
     }
 
 
@@ -48,7 +51,7 @@ public class Player {
 
     public String toString(){
         return "\nO player: " + this.nome + 
-        "\n status de vida: "+ this.vida + "\n vida maxima: " + this.vmax ;
+        "\n status de vida: "+ this.vida;
     }
 
     public void setVida(int vida){
