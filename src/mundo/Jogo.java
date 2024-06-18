@@ -13,11 +13,10 @@ public class Jogo {
             {
                 add(new Enemy("Ogro",2, 10));
                 add(new Enemy("Goblin", 1, 10));
-                add(new Enemy("Guardiao", 3, 20));
+                add(new Enemy("Guardiao", 3, 10));
             }
         };
-       
-        
+          
         //exibir a funcao menu
         if(menu()){
             //perguntar qual o nome do usuario
@@ -25,66 +24,75 @@ public class Jogo {
             String n = acao.next();
             Player p = new Player(n, 0, 20);
             int fase=1;
-            
-            
-            System.out.println("Um "+ e.nome + " apareceu na sua frente");
-            //loop para combate 
-        do{
+            //loop de fase
+            do{
+                Enemy e = nomes.get(rand.nextInt(nomes.size())); 
+                
+                
+                System.out.println("\nUm "+ e.nome + " apareceu na sua frente\n");
+                
+                //loop para combate 
+                do{
+                    System.out.println("################"); 
+                    System.out.println("Fase: " + fase);
+                   System.out.println("################"); 
+                    
+                    //menu de combate 
 
 
+                    System.out.println("--------Ações-------");
+                    System.out.println("[1] atacar [2] curar");
+                    int ac = acao.nextInt();
+                    //seleciono as acoes do player 
+                    switch (ac) {
+                        case 1:
+                        p.ataque(rand.nextInt(1,10), e);
+                        break;
                             
+                        case 2:
+                        p.curar(v);
+                        break;
+                    }
+                        //inimigo ataca e logo em seguida é mostrado na tela os status de cada um
+                        e.atacar(rand.nextInt(1,10), p);
+                        System.out.println(p.toString());
+                        System.out.println(e.toString());
+                         
+                    
                 
-            Enemy e = nomes.get(rand.nextInt(nomes.size())); 
-            System.out.println("Fase: " + fase);
-            //menu de combate 
-                
+                             
+                }while(p.getVida() > 0 && e.getVida() > 0);     
 
-            System.out.println("--------Ações-------");
-            System.out.println("[1] atacar [2] curar");
-            int ac = acao.nextInt();
-            //seleciono as acoes do player 
-            switch (ac) {
-                case 1:
-                p.ataque(rand.nextInt(1,10), e);
-                break;
-                    
-                case 2:
-                p.curar(v);
-                break;
-            }
-                //inimigo ataca e logo em seguida é mostrado na tela os status de cada um
-                e.atacar(rand.nextInt(1,10), p);
-                System.out.println(p.toString());
-                System.out.println(e.toString());
-                    
-             if(e.getVida() <= 0 && p.getVida()>0){
+                //reiniciando o adversario para que ele apareca nas fases posteriores
+                e.reiniciar();
+
+                
+                //exibir tela de morte 
+                if(p.getVida() > e.getVida()){
+                    System.out.println(e.tela());            
+                    }else{
+                        System.out.println(p.tela());            
+                }
+
+                if(e.getVida() <= 0){
                     if(continuar()){
                         fase+=1;
                         continue;
                         }else{
                             break;
                     }
-                }                   
+                }
 
-
-
-        }while(p.getVida() > 0);
-        
-        
-        //exibir tela de morte 
-        if(p.getVida() > e.getVida()){
-            System.out.println(e.tela());            
-        }else{
-            System.out.println(p.tela());            
-        }
-
-        //fase termina acima
+                
+                            
+            }while(p.getVida() > 0);                
+            //fase termina acima
         
         acao.close(); 
         } 
     }
 
-
+    //exibo o menu inicial do jogo
     public static boolean menu(){
         Scanner sc = new Scanner(System.in);
 
@@ -101,13 +109,14 @@ public class Jogo {
         }
     }
 
+    //funcao que pergunta se o usuario deseja continuar para a proxima fase
     public static boolean continuar(){
         Scanner sc = new Scanner(System.in);
         
         System.out.println("Continuar para a proxima fase? ");
         System.out.println("[1]sim   [2]não");
         int numero = sc.nextInt();
-
+         
         if(numero == 1){
             return true;
         }else{
@@ -115,5 +124,6 @@ public class Jogo {
         }
     }
 }
+
+//testar para saber se o problema da geração de inimigos aleatorios funciona
 //organizar melhor o output dos usuarios
-//gerar inimigos aleatorios a cada rodada
