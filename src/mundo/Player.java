@@ -13,7 +13,7 @@ public class Player {
 
     public void ataque(int d,Enemy n){
          System.out.println("###########################################");        
-        System.out.printf("O player %s está atacando e deu %d de dano \n", this.nome, d);
+        System.out.printf("O player %s está atacando e causou %d de dano \n", this.nome, d);
         n.setVida(n.getVida()-d);
         if(n.getVida() < 0){
             n.setVida(0);
@@ -29,9 +29,9 @@ public class Player {
                 this.setVida(this.vida += (this.vmax-this.vida));
                 inv.pocao-=1;
             }else{
-                System.out.println("###########################################");                                                                
+                System.out.println("\n###########################################");                                                                
                 System.out.println("A vida do player ja esta no maximo \n");
-                 System.out.println("###########################################");                
+                 System.out.println("###########################################\n"); 
             }
         }else{
             System.out.println("O player não tem pocoes para se curar! \n pocoes podem ser compradas com mercadores");

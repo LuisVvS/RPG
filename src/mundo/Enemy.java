@@ -6,6 +6,7 @@ public class Enemy extends Player {
     
     public Enemy(String nome, int level, int vida){
         super(nome,level, vida);
+        vmax = vida;
     }
 
     public String toString(){
@@ -26,7 +27,9 @@ public class Enemy extends Player {
             n.setVida(0);
         }
     }
-
+    public void reiniciar(){
+        this.vida = vmax;  
+    }
     @Override
     public String tela(){
         if(this.vida <= 0){
