@@ -1,7 +1,7 @@
 package mundo;
 public class Player {
     protected String nome;
-    protected int level, dano, vida, vmax;
+    protected int level, dano, vida, vmax, dtotal;
         
     public Player(String nome, int level, int vida){
         this.nome=nome;
@@ -12,7 +12,7 @@ public class Player {
 
 
     public void ataque(int d,Enemy n){
-         System.out.println("###########################################");        
+        System.out.println("\n------------------------------------------------\n"); 
         System.out.printf("O player %s está atacando e causou %d de dano \n", this.nome, d);
         n.setVida(n.getVida()-d);
         if(n.getVida() < 0){
@@ -24,14 +24,11 @@ public class Player {
     public void curar(Inventario inv){
         if(inv.pocao > 0){
             if(vida < vmax){
-                System.out.println("###########################################"); 
                 System.out.printf("O player %s está se curando e curou %d de vida \n", this.nome, this.vmax-this.vida);
                 this.setVida(this.vida += (this.vmax-this.vida));
                 inv.pocao-=1;
             }else{
-                System.out.println("\n###########################################");                                                                
                 System.out.println("A vida do player ja esta no maximo \n");
-                 System.out.println("###########################################\n"); 
             }
         }else{
             System.out.println("O player não tem pocoes para se curar! \n pocoes podem ser compradas com mercadores");
@@ -40,18 +37,27 @@ public class Player {
     
     public String tela(){
         if(this.vida <= 0){
-            return"\n#####\n" 
+            return"\n///////\n" 
                 + "O player " + this.nome + " esta morto!\n" + 
-            "######";
+            "/////////";
         }else{
             return ""; 
         }
     }
 
+    public String score(int x){
+        return "\nScore do Player: " + this.nome +"\n" + 
+        "______________________\n" + 
+        "-fases passadas: " + x + "\n" + 
+        "______________________\n" + 
+        "-dano : "+this.dtotal+"\n" +  
+        "__________________\n";
+    }
 
+    @Override
     public String toString(){
-        return "\nO player: " + this.nome + 
-        "\n status de vida: "+ this.vida;
+        return "O player: " + this.nome + 
+        "\n ><> status de vida: "+ this.vida + " <><" ;
     }
 
     public void setVida(int vida){
@@ -61,4 +67,14 @@ public class Player {
     public int getVida(){
         return vida;
     }
+
+
+    public void setDtotal(int dtotal){
+        this.dtotal=dtotal;
+    }
+    public int getDtotal(){
+        return dtotal;
+    }
+
+
 }
