@@ -9,10 +9,6 @@ public class Enemy extends Player {
         vmax = vida;
     }
 
-    public String toString(){
-        return "\nO inimigo: "+ this.nome + " \nstatus de vida: " + this.vida;
-    }
-
     public void setVida(int vida){
         this.vida=vida;
     }
@@ -22,6 +18,7 @@ public class Enemy extends Player {
     
     public void atacar(int d,Player n){
         System.out.printf("O %s está atacando e causou %d de dano \n", this.nome, d);
+        System.out.println("------------------------------------------------\n"); 
         n.setVida(n.getVida()-d);
         if(n.getVida() < 0){
             n.setVida(0);
@@ -30,6 +27,15 @@ public class Enemy extends Player {
     public void reiniciar(){
         this.vida = vmax;  
     }
+    
+    @Override
+    public String toString(){
+        return "/////////////////\n" 
+        + "O " + this.nome + 
+        "\n ><> status de vida: "+ this.vida + " <><\n" + 
+        "------------------------------------------------\n";
+    }
+
     @Override
     public String tela(){
         if(this.vida <= 0){
