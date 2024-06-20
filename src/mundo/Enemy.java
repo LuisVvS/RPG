@@ -1,7 +1,7 @@
 package mundo;
 
 import java.util.*;
-
+import java.io.*; 
 public class Enemy extends Player {
     
     public Enemy(String nome, int level, int vida){
@@ -9,6 +9,8 @@ public class Enemy extends Player {
         vmax = vida;
     }
 
+    public static final String ANSI_RED = "	\u001B[31m";
+    public static final String ANSI_RESET = "\u001B[0m"; 
     public void setVida(int vida){
         this.vida=vida;
     }
@@ -38,10 +40,10 @@ public class Enemy extends Player {
 
     @Override
     public String tela(){
+        
         if(this.vida <= 0){
-            return"\n#####\n" 
-                + "O " + this.nome + " esta morto!\n" + 
-            "######";
+            return"\n" 
+             + ">>"  + ANSI_RED + "O " + this.nome + " esta morto!" + ANSI_RESET;
 
         }else{
             return ""; 
