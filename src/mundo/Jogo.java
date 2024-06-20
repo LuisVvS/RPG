@@ -57,6 +57,9 @@ public class Jogo {
                         case 2:
                             p.curar(v);
                             break;
+
+                        default :
+                            System.out.println("Essa opção não existe");
                     }
                     // inimigo ataca se não estiver com a vida zerada
                     //e logo em seguida é mostrado na tela os status de cada combatente
@@ -128,7 +131,6 @@ public class Jogo {
     }
 }
 
-// organizar melhor o output dos usuarios
 // pegas as exceções
 // inventario e trabalhar na verificacao da quantidade de poções e armas que
 // possuem no inventario
