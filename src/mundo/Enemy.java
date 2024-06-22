@@ -1,6 +1,7 @@
 package mundo;
 
 import java.util.*;
+
 import java.io.*;
 
 public class Enemy extends Player {
@@ -11,10 +12,10 @@ public class Enemy extends Player {
     }
 
     public static final String ANSI_RED = "	\u001B[31m";
-    public static final String ANSI_RESET = "\u001B[0m";
 
-    public void setVida(int vida) {
-        this.vida = vida;
+    public static final String ANSI_RESET = "\u001B[0m"; 
+    public void setVida(int vida){
+        this.vida=vida;
     }
 
     public int getVida() {
@@ -51,6 +52,7 @@ public class Enemy extends Player {
 
         } else {
             return "";
+
         }
     }
 }

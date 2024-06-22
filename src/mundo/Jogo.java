@@ -68,11 +68,13 @@ public class Jogo {
                             p.curar(v);
                             break;
 
+
                         case 3:
                             v.Acessar();
                             break;
                         default:
                             System.out.println("Este valor não existe e sua rodada foi perdida");
+
                     }
                     // inimigo ataca se não estiver com a vida zerada
                     // e logo em seguida é mostrado na tela os status de cada combatente
