@@ -9,6 +9,14 @@ public class Jogo {
         Inventario v = new Inventario(2);
         Random rand = new Random();
 
+        // Lista de armas do jogo
+        List<Armas> armas = new ArrayList<Armas>() {
+            {
+                add(new Armas("Espada de madeira", 10));
+                add(new Armas("Espada da galaxia", 30));
+            }
+        };
+
         // lista de monstros gerados durante as fases
         List<Enemy> nomes = new ArrayList<Enemy>() {
             {
@@ -26,6 +34,7 @@ public class Jogo {
             String n = acao.next();
             Player p = new Player(n, 0, 20);
             int fase = 1;
+            v.setArma(armas.get(0));
 
             // loop de fase
             do {
@@ -34,6 +43,7 @@ public class Jogo {
 
                 // reiniciando o adversario para que ele apareca nas fases posteriores
                 e.reiniciar();
+
                 System.out.println("--------------------------------------------");
 
                 System.out.println("\n>> Um " + e.nome + " apareceu na sua frente <<\n");
@@ -42,14 +52,14 @@ public class Jogo {
                     System.out.println(">>>>>> Fase: " + fase + " <<<<<<");
 
                     // menu de combate
-                    System.out.println("--------Ações--------");
-                    System.out.println("[1] atacar [2] curar");
+                    System.out.println("---------------Ações---------------");
+                    System.out.println("[1] atacar [2] curar [3] Inventario");
                     int ac = acao.nextInt();
 
                     // seleciono as acoes do player
                     switch (ac) {
                         case 1:
-                            int dano = rand.nextInt(5, 10);
+                            int dano = rand.nextInt(v.getArma().getDano());
                             p.setDtotal(dano + p.getDtotal());
                             p.ataque(dano, e);
                             break;
@@ -58,11 +68,16 @@ public class Jogo {
                             p.curar(v);
                             break;
 
-                        default :
-                            System.out.println("Essa opção não existe");
+
+                        case 3:
+                            v.Acessar();
+                            break;
+                        default:
+                            System.out.println("Este valor não existe e sua rodada foi perdida");
+
                     }
                     // inimigo ataca se não estiver com a vida zerada
-                    //e logo em seguida é mostrado na tela os status de cada combatente
+                    // e logo em seguida é mostrado na tela os status de cada combatente
                     if (e.getVida() > 0) {
                         e.atacar(rand.nextInt(1, 10), p);
                     }
@@ -82,12 +97,16 @@ public class Jogo {
                 if (e.getVida() <= 0) {
                     if (continuar()) {
                         fase += 1;
-                        continue;
                     } else {
                         break;
                     }
                 }
 
+                // ceritifica que o vendedor apareca a cada 3 fases
+                if (fase % 5 == 0 && p.getVida() > 0) {
+                    Vendedor vendedor = new Vendedor();
+                    vendedor.venda(v);
+                }
             } while (p.getVida() > 0);
             // fase termina acima
 
@@ -101,37 +120,49 @@ public class Jogo {
     public static boolean menu() {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("\n--------ola--------");
-        System.out.println("---seja bem-vindo---");
-        System.out.println("-Voce deseja jogar?-");
-        System.out.println("[1] sim [2] nao");
-        System.out.println("-------------------");
-        int numero = sc.nextInt();
+        try {
+            System.out.println("\n--------ola--------");
+            System.out.println("---seja bem-vindo---");
+            System.out.println("-Voce deseja jogar?-");
+            System.out.println("[1] sim [2] nao");
+            System.out.println("-------------------");
 
-        if (numero == 1) {
-            return true;
-        } else {
+            int numero = sc.nextInt();
+
+            if (numero == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Este valor não existe");
             return false;
         }
+
     }
 
     // funcao que pergunta se o usuario deseja continuar para a proxima fase
     public static boolean continuar() {
         Scanner sc = new Scanner(System.in);
+        try {
+            System.out.println("Continuar para a proxima fase? ");
+            System.out.println("[1]sim   [2]não");
+            int numero = sc.nextInt();
 
-        System.out.println("Continuar para a proxima fase? ");
-        System.out.println("[1]sim   [2]não");
-        int numero = sc.nextInt();
-
-        if (numero == 1) {
-            return true;
-        } else {
+            if (numero == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Este valor não existe");
             return false;
         }
     }
 }
 
 // pegas as exceções
-// inventario e trabalhar na verificacao da quantidade de poções e armas que
-// possuem no inventario
-// trabalhar na compra de itens
+// sistema de armadura
+// Sistema de moeda
+// adicionar outros itens para venda como espadas e armaduras
+// adicionar boss nas fases 10 e 20
