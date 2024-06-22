@@ -4,27 +4,30 @@ public class Armas {
     protected String nome;
     protected int dano;
 
-    public Armas(String nome, int dano){
-        this.nome=nome;
-        this.dano=dano;
+    public Armas(String nome, int dano) {
+        this.nome = nome;
+        this.dano = dano;
     }
 
-    public void setNome(String nome){
-        this.nome=nome;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public String getNome(){
+    public String getNome() {
         return nome;
     }
 
-    public void setDano(int dano){
-        this.dano=dano;
+    public void setDano(int dano) {
+        this.dano = dano;
     }
-    public int getDano(){
+
+    public int getDano() {
         return dano;
     }
 
-    public String toString(){
-        return "A arma: " + this.nome + " ,causa dano de: "+ this.dano;
+    public String toString() {
+        return "\nA descrição de item : " + 
+        "\nNome: " +  this.nome 
+        + "\ndano : " + this.dano+"\n";
     }
 }
