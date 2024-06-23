@@ -1,7 +1,6 @@
 package mundo;
 
 import java.util.*;
-
 public class Jogo {
     public static void main(String[] args) {
 
@@ -12,7 +11,7 @@ public class Jogo {
         // Lista de armas do jogo
         List<Armas> armas = new ArrayList<Armas>() {
             {
-                add(new Armas("Espada de madeira", 10));
+                add(new Armas("Espada", 15));
                 add(new Armas("Espada da galaxia", 30));
             }
         };
@@ -20,9 +19,11 @@ public class Jogo {
         // lista de monstros gerados durante as fases
         List<Enemy> nomes = new ArrayList<Enemy>() {
             {
-                add(new Enemy("Ogro", 2, 10));
-                add(new Enemy("Goblin", 1, 10));
-                add(new Enemy("Guardiao", 3, 10));
+                add(new Enemy("Ogro", 2, 15));
+                add(new Enemy("Goblin", 1, 7));
+                add(new Enemy("Guardiao", 3, 20));
+                add(new Enemy("Vampiro", 1, 12));
+                add(new Enemy("Fantasma", 1, 10));
             }
         };
 
@@ -35,17 +36,14 @@ public class Jogo {
             Player p = new Player(n, 0, 20);
             int fase = 1;
             v.setArma(armas.get(0));
-
             // loop de fase
             do {
-
                 Enemy e = nomes.get(rand.nextInt(nomes.size()));
 
                 // reiniciando o adversario para que ele apareca nas fases posteriores
                 e.reiniciar();
 
                 System.out.println("--------------------------------------------");
-
                 System.out.println("\n>> Um " + e.nome + " apareceu na sua frente <<\n");
                 // loop para combate
                 do {
@@ -68,9 +66,8 @@ public class Jogo {
                             p.curar(v);
                             break;
 
-
                         case 3:
-                            v.Acessar();
+                            v.Acessar(p);
                             break;
                         default:
                             System.out.println("Este valor não existe e sua rodada foi perdida");
@@ -85,6 +82,11 @@ public class Jogo {
                     System.out.println(e.toString());
 
                 } while (p.getVida() > 0 && e.getVida() > 0);
+
+                // Adicionar moedas a cada morte de monstro
+                int mod = rand.nextInt(1, 5);
+                System.out.println("Você ganhou " + mod + " moedas!");
+                p.setMoeda(p.getMoeda() + mod);
 
                 // exibir tela de morte
                 if (p.getVida() > e.getVida()) {
@@ -103,10 +105,13 @@ public class Jogo {
                 }
 
                 // ceritifica que o vendedor apareca a cada 3 fases
+
                 if (fase % 5 == 0 && p.getVida() > 0) {
                     Vendedor vendedor = new Vendedor();
-                    vendedor.venda(v);
+                    vendedor.venda(v, p);
+
                 }
+
             } while (p.getVida() > 0);
             // fase termina acima
 
@@ -161,8 +166,6 @@ public class Jogo {
     }
 }
 
-// pegas as exceções
-// sistema de armadura
-// Sistema de moeda
-// adicionar outros itens para venda como espadas e armaduras
-// adicionar boss nas fases 10 e 20
+//adicionar opcao de correr
+//fazer um boss final
+//fazer uma historia melhor

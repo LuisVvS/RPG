@@ -2,7 +2,8 @@ package mundo;
 
 public class Player {
     protected String nome;
-    protected int level, dano, vida, vmax, dtotal, moeda;
+    protected int level, dano, vida, vmax, dtotal, moeda=10;
+    
     public Player(String nome, int level, int vida) {
         this.nome = nome;
         this.level = level;
@@ -57,6 +58,14 @@ public class Player {
     public String toString() {
         return "O player: " + this.nome +
                 "\n ><> status de vida: " + this.vida + " <><";
+    }
+
+    public void setMoeda(int moeda) {
+        this.moeda = moeda;
+    }
+
+    public int getMoeda() {
+        return moeda;
     }
 
     public void setVida(int vida) {
