@@ -1,6 +1,7 @@
 package mundo;
 
 import java.util.*;
+
 public class Jogo {
     public static void main(String[] args) {
 
@@ -50,8 +51,8 @@ public class Jogo {
                     System.out.println(">>>>>> Fase: " + fase + " <<<<<<");
 
                     // menu de combate
-                    System.out.println("---------------Ações---------------");
-                    System.out.println("[1] atacar [2] curar [3] Inventario");
+                    System.out.println("--------------------Ações--------------------");
+                    System.out.println("[1] atacar [2] curar [3] Inventario [4]Habilidade");
                     int ac = acao.nextInt();
 
                     // seleciono as acoes do player
@@ -69,27 +70,46 @@ public class Jogo {
                         case 3:
                             v.Acessar(p);
                             break;
+
+                        case 4:
+                            if (p.getHabilidade() >= 1) {
+                                int berserk = v.getArma().getDano() + (v.getArma().getDano() / 2);
+                                p.ataque(berserk, e);
+                                p.setHabilidade(p.getHabilidade() - 1);
+                            } else {
+                                System.out.println("Você não tem pontos de habilidade para consumir");
+                            }
+                            break;
+
                         default:
                             System.out.println("Este valor não existe e sua rodada foi perdida");
 
                     }
+
                     // inimigo ataca se não estiver com a vida zerada
-                    // e logo em seguida é mostrado na tela os status de cada combatente
+                    // e o vampiro utiliza uma habilidade
                     if (e.getVida() > 0) {
-                        e.atacar(rand.nextInt(1, 10), p);
+                        if (e.perk()) {
+                            e.setVida(e.getVida() + 3);
+                            e.setHabilidade(e.getHabilidade() - 1);
+                            System.out.println("O vampiro usou sua habilidade e se curou");
+                        } else {
+                            e.atacar(rand.nextInt(1, 10), p);
+                        }
                     }
+
+                    // e logo em seguida é mostrado na tela os status de cada combatente
                     System.out.println(p.toString());
                     System.out.println(e.toString());
 
                 } while (p.getVida() > 0 && e.getVida() > 0);
 
-                // Adicionar moedas a cada morte de monstro
-                int mod = rand.nextInt(1, 5);
-                System.out.println("Você ganhou " + mod + " moedas!");
-                p.setMoeda(p.getMoeda() + mod);
-
                 // exibir tela de morte
                 if (p.getVida() > e.getVida()) {
+                    // Adicionar moedas a cada morte de monstro
+                    int mod = rand.nextInt(1, 5);
+                    System.out.println("Você ganhou " + mod + " moedas!");
+                    p.setMoeda(p.getMoeda() + mod);
                     System.out.println(e.tela());
                 } else {
                     System.out.println(p.tela());
@@ -162,10 +182,10 @@ public class Jogo {
         } catch (InputMismatchException e) {
             System.out.println("Este valor não existe");
             return false;
-       }
+        }
     }
 }
 
-//adicionar opcao de correr
-//fazer um boss final
-//fazer uma historia melhor
+//adicionar o sistema de compra de habilidades  na classe vendedor
+// fazer um boss final
+// fazer uma historia melhor
