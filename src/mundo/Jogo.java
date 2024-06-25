@@ -162,7 +162,7 @@ public class Jogo {
         } catch (InputMismatchException e) {
             System.out.println("Este valor não existe");
             return false;
-        }
+       }
     }
 }
 
