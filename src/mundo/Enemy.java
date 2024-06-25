@@ -9,13 +9,15 @@ public class Enemy extends Player {
     public Enemy(String nome, int level, int vida) {
         super(nome, level, vida);
         vmax = vida;
+        habilidade = 3;
     }
 
     public static final String ANSI_RED = "	\u001B[31m";
 
-    public static final String ANSI_RESET = "\u001B[0m"; 
-    public void setVida(int vida){
-        this.vida=vida;
+    public static final String ANSI_RESET = "\u001B[0m";
+
+    public void setVida(int vida) {
+        this.vida = vida;
     }
 
     public int getVida() {
@@ -33,6 +35,7 @@ public class Enemy extends Player {
 
     public void reiniciar() {
         this.vida = vmax;
+        this.habilidade += 3;
     }
 
     @Override
@@ -54,5 +57,14 @@ public class Enemy extends Player {
             return "";
 
         }
+    }
+
+    public boolean perk() {
+        if (this.nome == "Vampiro" && this.vida < (this.vmax / 2)) {
+            if (this.habilidade >= 1) {
+                return true;
+            }
+        }
+        return false;
     }
 }

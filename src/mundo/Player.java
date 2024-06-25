@@ -2,8 +2,9 @@ package mundo;
 
 public class Player {
     protected String nome;
-    protected int level, dano, vida, vmax, dtotal, moeda=10;
-    
+    protected int level, dano, vida, vmax, dtotal, moeda = 10;
+    protected int habilidade = 1;
+
     public Player(String nome, int level, int vida) {
         this.nome = nome;
         this.level = level;
@@ -84,4 +85,11 @@ public class Player {
         return dtotal;
     }
 
+    public void setHabilidade(int habilidade) {
+        this.habilidade = habilidade;
+    }
+
+    public int getHabilidade() {
+        return habilidade;
+    }
 }
