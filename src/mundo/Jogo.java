@@ -8,6 +8,7 @@ public class Jogo {
         Scanner acao = new Scanner(System.in);
         Inventario v = new Inventario(2);
         Random rand = new Random();
+        int habilidade = 0;
 
         // Lista de armas do jogo
         List<Armas> armas = new ArrayList<Armas>() {
@@ -29,115 +30,134 @@ public class Jogo {
         };
 
         // exibir a funcao menu
-        if (menu()) {
+        try {
+            if (menu()) {
 
-            // perguntar qual o nome do usuario
-            System.out.println("Qual o nome do seu usuario? ");
-            String n = acao.next();
-            Player p = new Player(n, 0, 20);
-            int fase = 1;
-            v.setArma(armas.get(0));
-            // loop de fase
-            do {
-                Enemy e = nomes.get(rand.nextInt(nomes.size()));
+                // perguntar qual o nome do usuario
+                System.out.println("Qual o nome do seu usuario? ");
+                String n = acao.next();
+                Player p = new Player(n, 0, 20);
+                int fase = 1;
+                v.setArma(armas.get(1));
 
-                // reiniciando o adversario para que ele apareca nas fases posteriores
-                e.reiniciar();
-
-                System.out.println("--------------------------------------------");
-                System.out.println("\n>> Um " + e.nome + " apareceu na sua frente <<\n");
-                // loop para combate
                 do {
-                    System.out.println(">>>>>> Fase: " + fase + " <<<<<<");
+                    System.out.println("Qual a habilidade você vai querer? ");
+                    System.out.println("-1- Berserk ");
+                    System.out.println(
+                            "Berserk: Ao ativar esta habilidade, o player da o dano total da sua arma, mais metade do dano total");
+                    System.out.println("-2- Heimdall");
+                    System.out.println(
+                            "Heimdall: Ao ativar esta habilidade o player adiciona 20 de proteção a sua vida.");
+                    habilidade = acao.nextInt();
+                
+                } while (habilidade != 1 && habilidade != 2);
 
-                    // menu de combate
-                    System.out.println("--------------------Ações--------------------");
-                    System.out.println("[1] atacar [2] curar [3] Inventario [4]Habilidade");
-                    int ac = acao.nextInt();
+                // loop de fase
+                do {
+                    Enemy e = nomes.get(rand.nextInt(nomes.size()));
 
-                    // seleciono as acoes do player
-                    switch (ac) {
-                        case 1:
-                            int dano = rand.nextInt(v.getArma().getDano());
-                            p.setDtotal(dano + p.getDtotal());
-                            p.ataque(dano, e);
-                            break;
+                    // reiniciando o adversario para que ele apareca nas fases posteriores
+                    e.reiniciar();
 
-                        case 2:
-                            p.curar(v);
-                            break;
+                    System.out.println("--------------------------------------------");
+                    System.out.println("\n>> Um " + e.nome + " apareceu na sua frente <<\n");
+                    // loop para combate
+                    do {
+                        System.out.println(">>>>>> Fase: " + fase + " <<<<<<");
 
-                        case 3:
-                            v.Acessar(p);
-                            break;
+                        // menu de combate
+                        System.out.println("--------------------Ações--------------------");
+                        System.out.println("[1] atacar [2] curar [3] Inventario [4]Habilidade");
 
-                        case 4:
-                            if (p.getHabilidade() >= 1) {
-                                int berserk = v.getArma().getDano() + (v.getArma().getDano() / 2);
-                                p.ataque(berserk, e);
-                                p.setHabilidade(p.getHabilidade() - 1);
+                        int ac = acao.nextInt();
+
+                        // seleciono as acoes do player
+                        switch (ac) {
+                            case 1:
+                                int dano = rand.nextInt(v.getArma().getDano());
+                                p.setDtotal(dano + p.getDtotal());
+                                p.ataque(dano, e);
+                                break;
+
+                            case 2:
+                                p.curar(v);
+                                break;
+
+                            case 3:
+                                v.Acessar(p);
+                                continue;
+
+                            case 4:
+                                if (p.getHabilidade() >= 1) {
+                                    if (habilidade == 1) {
+                                        p.berserk(e, v);
+                                    }
+                                } else {
+                                    System.out.println("Você não tem pontos de habilidade para consumir");
+                                }
+                                break;
+
+                            default:
+                                System.out.println("Este valor não existe e sua rodada foi perdida");
+
+                        }
+
+                        // inimigo ataca se não estiver com a vida zerada
+                        // e o vampiro utiliza uma habilidade
+                        if (e.getVida() > 0) {
+                            if (e.perk()) {
+                                e.setVida(e.getVida() + 3);
+                                e.setHabilidade(e.getHabilidade() - 1);
+                                System.out.println("O vampiro usou sua habilidade e se curou");
                             } else {
-                                System.out.println("Você não tem pontos de habilidade para consumir");
+                                e.atacar(rand.nextInt(1, 10), p);
                             }
-                            break;
+                        }
 
-                        default:
-                            System.out.println("Este valor não existe e sua rodada foi perdida");
+                        // e logo em seguida é mostrado na tela os status de cada combatente
+                        System.out.println(p.toString());
+                        System.out.println(e.toString());
 
+                    } while (p.getVida() > 0 && e.getVida() > 0);
+
+                    // exibir tela de morte
+                    if (p.getVida() > e.getVida()) {
+                        // Adicionar moedas a cada morte de monstro
+                        int mod = rand.nextInt(1, 5);
+                        System.out.println("Você ganhou " + mod + " moedas!");
+                        p.setMoeda(p.getMoeda() + mod);
+                        System.out.println(e.tela());
+                    } else {
+                        System.out.println(p.tela());
                     }
 
-                    // inimigo ataca se não estiver com a vida zerada
-                    // e o vampiro utiliza uma habilidade
-                    if (e.getVida() > 0) {
-                        if (e.perk()) {
-                            e.setVida(e.getVida() + 3);
-                            e.setHabilidade(e.getHabilidade() - 1);
-                            System.out.println("O vampiro usou sua habilidade e se curou");
+                    // exibir perguta de proxima fase
+                    if (e.getVida() <= 0) {
+                        if (continuar()) {
+                            fase += 1;
                         } else {
-                            e.atacar(rand.nextInt(1, 10), p);
+                            break;
                         }
                     }
 
-                    // e logo em seguida é mostrado na tela os status de cada combatente
-                    System.out.println(p.toString());
-                    System.out.println(e.toString());
+                    // ceritifica que o vendedor apareca a cada 3 fases
 
-                } while (p.getVida() > 0 && e.getVida() > 0);
+                    if (fase % 5 == 0 && p.getVida() > 0) {
+                        Vendedor vendedor = new Vendedor();
+                        vendedor.venda(v, p);
 
-                // exibir tela de morte
-                if (p.getVida() > e.getVida()) {
-                    // Adicionar moedas a cada morte de monstro
-                    int mod = rand.nextInt(1, 5);
-                    System.out.println("Você ganhou " + mod + " moedas!");
-                    p.setMoeda(p.getMoeda() + mod);
-                    System.out.println(e.tela());
-                } else {
-                    System.out.println(p.tela());
-                }
-
-                // exibir pergutnta de proxima fase
-                if (e.getVida() <= 0) {
-                    if (continuar()) {
-                        fase += 1;
-                    } else {
-                        break;
                     }
-                }
 
-                // ceritifica que o vendedor apareca a cada 3 fases
+                } while (p.getVida() > 0);
+                // fase termina acima
 
-                if (fase % 5 == 0 && p.getVida() > 0) {
-                    Vendedor vendedor = new Vendedor();
-                    vendedor.venda(v, p);
+                // mostra score do player
+                System.out.println(p.score(fase - 1));
+                acao.close();
+            }
 
-                }
-
-            } while (p.getVida() > 0);
-            // fase termina acima
-
-            // mostra score do player
-            System.out.println(p.score(fase - 1));
-            acao.close();
+        } catch (Exception e) {
+            System.out.println("Não foi");
         }
     }
 
@@ -186,6 +206,11 @@ public class Jogo {
     }
 }
 
-//adicionar o sistema de compra de habilidades  na classe vendedor
+//
+// adicionar o sistema de compra de habilidades na classe vendedor e adicionar
+// pontos de habilidade ao inventario
+// sistema de level aumentar força que vai aumentar o dano normal e aumentar
+// vida fixa
+// os aumentos de força e vida não mudam nada nas habilidades
 // fazer um boss final
 // fazer uma historia melhor
