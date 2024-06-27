@@ -7,7 +7,7 @@ public class Vendedor {
     HashMap<String, Integer> estoque = new HashMap<String, Integer>();
 
     public void venda(Inventario inventario, Player p) {
-        
+
         estoque.put("Pocao", 10);
         estoque.put("Habilidade", 1);
 
@@ -42,13 +42,21 @@ public class Vendedor {
                 case 2:
                     System.out.println("\nQuantas você deseja comprar? ");
                     int quan = sc.nextInt();
-                    if (quan > hab && quan <= p.getMoeda()) {
+
+                    if (quan > hab || (quan * 30) > p.getMoeda()) {
                         System.out.println("\nEsta quantia é invalida");
                     } else {
-                        inventario.setPocao(quan + inventario.getPocao());
-                        p.setMoeda(p.getMoeda() - quan);
-                        System.out.println("\nVenda feita com sucesso");
-                        hab -= quan;
+                        if (p.getHabilidade() >= 2) {
+                            System.out.println("Você atingiu o maximo de habilidades permitidas por player");
+                        } else {
+                            // adicionar compra do ponto ao inventario de player
+                            p.setHabilidade(quan + p.getHabilidade());
+                            // diminuir habilidade da loja do vendedor
+                            hab -= quan;
+                            // retiro a quantidade de moedas vendidas do inventario do player
+                            p.setMoeda(p.getMoeda() - 30);
+                            System.out.println("\nVenda feita com sucesso");
+                        }
                     }
                     break;
                 case 0:

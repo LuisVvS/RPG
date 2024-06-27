@@ -1,8 +1,10 @@
 package mundo;
 
+import java.util.InputMismatchException;
+
 public class Player {
     protected String nome;
-    protected int level, dano, vida, vmax, dtotal, moeda = 10;
+    protected int level, dano, vida, vmax, dtotal, moeda = 30;
     protected int habilidade = 1;
 
     public Player(String nome, int level, int vida) {
@@ -91,5 +93,26 @@ public class Player {
 
     public int getHabilidade() {
         return habilidade;
+    }
+
+    public void berserk(Enemy e, Inventario v) {
+        try {
+            int berserk = v.getArma().getDano() + (v.getArma().getDano() / 2);
+            this.ataque(berserk, e);
+            this.setHabilidade(this.getHabilidade() - 1);
+        } catch (InputMismatchException y) {
+            System.out.println();
+        }
+    }
+
+    public void heimdall() {
+        try {
+            this.setVida(this.getVida() + 20);
+            System.out.println("Foi adicionado 20 de proteção a vida do Player");
+            this.habilidade -= 1;
+        } catch (InputMismatchException y) {
+            System.out.println();
+        }
+
     }
 }
