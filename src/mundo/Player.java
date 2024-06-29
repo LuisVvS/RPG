@@ -1,11 +1,13 @@
 package mundo;
 
 import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class Player {
     protected String nome;
-    protected int level, dano, vida, vmax, dtotal, moeda = 30;
+    protected int level, vida, vmax, dtotal, xp, moeda = 30;
     protected int habilidade = 1;
+    protected double forca, saude;
 
     public Player(String nome, int level, int vida) {
         this.nome = nome;
@@ -15,7 +17,6 @@ public class Player {
     }
 
     public void ataque(int d, Enemy n) {
-        System.out.println("\n------------------------------------------------\n");
         System.out.printf("O player %s está atacando e causou %d de dano \n", this.nome, d);
         n.setVida(n.getVida() - d);
         if (n.getVida() < 0) {
@@ -57,12 +58,6 @@ public class Player {
                 "__________________\n";
     }
 
-    @Override
-    public String toString() {
-        return "O player: " + this.nome +
-                "\n ><> status de vida: " + this.vida + " <><";
-    }
-
     public void setMoeda(int moeda) {
         this.moeda = moeda;
     }
@@ -93,6 +88,86 @@ public class Player {
 
     public int getHabilidade() {
         return habilidade;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setXP(int xp) {
+        this.xp = xp;
+    }
+
+    public int getXP() {
+        return xp;
+    }
+    public void setNome(String nome){
+        this.nome=nome;
+    }
+    public String getNome(){
+        return nome;
+    }
+
+    public void setForca(double forca){
+        this.forca=forca;
+    }
+    public double getForca(){
+        return forca;
+    }
+
+    public void setSaude(double saude){
+        this.saude=saude;
+    }
+    public double getSaude(){
+        return saude;
+    }
+
+    public void levelup() {
+        Scanner sc = new Scanner(System.in);
+        int att = 0;
+
+        if (this.xp >= (this.level + 1) * 10) {
+
+            System.out.println("Parabens, você subiu de level!");
+            System.out.println("Level anterior: " + this.level);
+            this.level = this.xp / 10;
+            System.out.println("Level atual: " + this.level);
+
+            try {
+                do {
+                    System.out.println("Qual atributo você deseja aumentar? ");
+                    System.out.println("[1] Força");
+                    System.out.println("[2] Saude");
+                    att = sc.nextInt();
+                } while (att != 1 && att != 2);
+
+            } catch (InputMismatchException y) {
+                System.out.println("Este não é um valor valido");
+            }
+
+            if (att == 1) {
+                System.out.println("Sua força antes: " + this.forca);
+                System.out.println("Sua saude antes: " + this.saude);
+                this.saude += 0.05;
+                this.forca += 0.2;
+                System.out.println("Sua força atual: " + this.forca);
+                System.out.println("Sua saude atual: " + this.saude);
+            } else {
+                if (att == 2) {
+                    System.out.println("Sua força antes: " + this.forca);
+                    System.out.println("Sua saude antes: " + this.saude);
+                    this.forca += 0.05;
+                    this.saude += 0.2;
+                    System.out.println("Sua força atual: " + this.forca);
+                    System.out.println("Sua saude atual: " + this.saude);
+                    this.vida += this.vmax*this.saude ;
+                }
+            }
+        }
     }
 
     public void berserk(Enemy e, Inventario v) {

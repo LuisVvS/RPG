@@ -49,7 +49,7 @@ public class Jogo {
                     System.out.println(
                             "Heimdall: Ao ativar esta habilidade o player adiciona 20 de proteção a sua vida.");
                     habilidade = acao.nextInt();
-                
+
                 } while (habilidade != 1 && habilidade != 2);
 
                 // loop de fase
@@ -59,11 +59,11 @@ public class Jogo {
                     // reiniciando o adversario para que ele apareca nas fases posteriores
                     e.reiniciar();
 
+                    System.out.println(">>>>>> Fase: " + fase + " <<<<<<");
                     System.out.println("--------------------------------------------");
                     System.out.println("\n>> Um " + e.nome + " apareceu na sua frente <<\n");
                     // loop para combate
                     do {
-                        System.out.println(">>>>>> Fase: " + fase + " <<<<<<");
 
                         // menu de combate
                         System.out.println("--------------------Ações--------------------");
@@ -76,7 +76,7 @@ public class Jogo {
                             case 1:
                                 int dano = rand.nextInt(v.getArma().getDano());
                                 p.setDtotal(dano + p.getDtotal());
-                                p.ataque(dano, e);
+                                p.ataque( (int)(dano+(dano*p.getForca()))  , e);
                                 break;
 
                             case 2:
@@ -91,6 +91,10 @@ public class Jogo {
                                 if (p.getHabilidade() >= 1) {
                                     if (habilidade == 1) {
                                         p.berserk(e, v);
+                                    } else {
+                                        if (habilidade == 2) {
+                                            p.heimdall();
+                                        }
                                     }
                                 } else {
                                     System.out.println("Você não tem pontos de habilidade para consumir");
@@ -115,8 +119,11 @@ public class Jogo {
                         }
 
                         // e logo em seguida é mostrado na tela os status de cada combatente
-                        System.out.println(p.toString());
+                        System.out.println("==================================================");
+                        System.out.println("Player: " + p.getNome() + " | Vida: " + p.getVida());
+                        System.out.println("Nivel: " + p.getLevel() + "\n");
                         System.out.println(e.toString());
+                        System.out.println("==================================================");
 
                     } while (p.getVida() > 0 && e.getVida() > 0);
 
@@ -126,6 +133,12 @@ public class Jogo {
                         int mod = rand.nextInt(1, 5);
                         System.out.println("Você ganhou " + mod + " moedas!");
                         p.setMoeda(p.getMoeda() + mod);
+
+                        int xp = rand.nextInt(2, 4);
+                        System.out.println("Você ganhou " + xp + " de xp");
+                        p.setXP(p.getXP() + xp);
+                        p.levelup();
+
                         System.out.println(e.tela());
                     } else {
                         System.out.println(p.tela());
@@ -140,8 +153,7 @@ public class Jogo {
                         }
                     }
 
-                    // ceritifica que o vendedor apareca a cada 3 fases
-
+                    // ceritifica que o vendedor apareca a cada 5 fases
                     if (fase % 5 == 0 && p.getVida() > 0) {
                         Vendedor vendedor = new Vendedor();
                         vendedor.venda(v, p);
@@ -156,7 +168,7 @@ public class Jogo {
                 acao.close();
             }
 
-        } catch (Exception e) {
+        } catch (InputMismatchException e) {
             System.out.println("Não foi");
         }
     }
@@ -183,7 +195,6 @@ public class Jogo {
             System.out.println("Este valor não existe");
             return false;
         }
-
     }
 
     // funcao que pergunta se o usuario deseja continuar para a proxima fase
@@ -206,11 +217,14 @@ public class Jogo {
     }
 }
 
-//
-// adicionar o sistema de compra de habilidades na classe vendedor e adicionar
-// pontos de habilidade ao inventario
+// Definir quando o player sobe de level, porque isso está bastante indefinido
+// preciso verificar os trys e catchs do sistema, coloquei o loop todo do game
+// em um try.
 // sistema de level aumentar força que vai aumentar o dano normal e aumentar
 // vida fixa
 // os aumentos de força e vida não mudam nada nas habilidades
 // fazer um boss final
 // fazer uma historia melhor
+// melhorar o estilo tenho esses dois links do github
+// que geram tabelas em java https://github.com/vdmeer/asciitable
+// https://github.com/JakeWharton/picnic

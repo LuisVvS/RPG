@@ -34,10 +34,13 @@ public class Inventario {
             do {
                 System.out.println("-----Inventario do player-----");
                 System.out.println("_______________________________");
+                //System.out.println("Vida do Player: " +p.getVida());
                 System.out.println("Arma: " + this.arma.getNome());
                 System.out.println(" Numero de pocoes: " + this.pocao);
                 System.out.println("Moedas: "+ p.getMoeda());
                 System.out.println("Pontos da Habilidade: "+ p.getHabilidade());
+                //System.out.println("Nivel: "+ p.getLevel());
+                System.out.println("XP: "+ p.getXP());
                 System.out.println("_______________________________");
                 System.out.println("[1] Descrição Arma [2] Sair");
                 op = opcao.nextInt();

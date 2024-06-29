@@ -26,7 +26,6 @@ public class Enemy extends Player {
 
     public void atacar(int d, Player n) {
         System.out.printf("O %s está atacando e causou %d de dano \n", this.nome, d);
-        System.out.println("------------------------------------------------\n");
         n.setVida(n.getVida() - d);
         if (n.getVida() < 0) {
             n.setVida(0);
@@ -40,10 +39,7 @@ public class Enemy extends Player {
 
     @Override
     public String toString() {
-        return "/////////////////\n"
-                + "O " + this.nome +
-                "\n ><> status de vida: " + this.vida + " <><\n" +
-                "------------------------------------------------\n";
+        return "Inimigo: " + this.nome + " | Vida: " + this.vida;
     }
 
     @Override
