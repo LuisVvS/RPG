@@ -5,11 +5,12 @@ import java.util.*;
 import java.io.*;
 
 public class Enemy extends Player {
-
-    public Enemy(String nome, int level, int vida) {
-        super(nome, level, vida);
+    
+    protected int habilidade;
+    public Enemy(String nome, int vida) {
+        super(nome, vida);
         vmax = vida;
-        habilidade = 3;
+        habilidade=3;
     }
 
     public static final String ANSI_RED = "	\u001B[31m";
@@ -51,7 +52,6 @@ public class Enemy extends Player {
 
         } else {
             return "";
-
         }
     }
 

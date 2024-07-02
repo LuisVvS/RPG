@@ -21,22 +21,22 @@ public class Jogo {
         // lista de monstros gerados durante as fases
         List<Enemy> nomes = new ArrayList<Enemy>() {
             {
-                add(new Enemy("Ogro", 2, 15));
-                add(new Enemy("Goblin", 1, 7));
-                add(new Enemy("Guardiao", 3, 20));
-                add(new Enemy("Vampiro", 1, 12));
-                add(new Enemy("Fantasma", 1, 10));
+                // add(new Enemy("Ogro",15));
+                // add(new Enemy("Goblin",7));
+                // add(new Enemy("Guardiao",20));
+                add(new Enemy("Vampiro", 12));
+                // add(new Enemy("Fantasma",10));
             }
         };
 
         // exibir a funcao menu
         try {
             if (menu()) {
-
+                historia();
                 // perguntar qual o nome do usuario
                 System.out.println("Qual o nome do seu usuario? ");
                 String n = acao.next();
-                Player p = new Player(n, 0, 20);
+                Player p = new Player(n, 20);
                 int fase = 1;
                 v.setArma(armas.get(1));
 
@@ -59,73 +59,13 @@ public class Jogo {
                     // reiniciando o adversario para que ele apareca nas fases posteriores
                     e.reiniciar();
 
-                    System.out.println(">>>>>> Fase: " + fase + " <<<<<<");
+                    System.out.println(">>>>>> level: " + fase + " <<<<<<");
                     System.out.println("--------------------------------------------");
                     System.out.println("\n>> Um " + e.nome + " apareceu na sua frente <<\n");
-                    // loop para combate
-                    do {
 
-                        // menu de combate
-                        System.out.println("--------------------Ações--------------------");
-                        System.out.println("[1] atacar [2] curar [3] Inventario [4]Habilidade");
+                    //combate 
+                    combate(p, e, v, acao, rand, habilidade);
 
-                        int ac = acao.nextInt();
-
-                        // seleciono as acoes do player
-                        switch (ac) {
-                            case 1:
-                                int dano = rand.nextInt(v.getArma().getDano());
-                                p.setDtotal(dano + p.getDtotal());
-                                p.ataque( (int)(dano+(dano*p.getForca()))  , e);
-                                break;
-
-                            case 2:
-                                p.curar(v);
-                                break;
-
-                            case 3:
-                                v.Acessar(p);
-                                continue;
-
-                            case 4:
-                                if (p.getHabilidade() >= 1) {
-                                    if (habilidade == 1) {
-                                        p.berserk(e, v);
-                                    } else {
-                                        if (habilidade == 2) {
-                                            p.heimdall();
-                                        }
-                                    }
-                                } else {
-                                    System.out.println("Você não tem pontos de habilidade para consumir");
-                                }
-                                break;
-
-                            default:
-                                System.out.println("Este valor não existe e sua rodada foi perdida");
-
-                        }
-
-                        // inimigo ataca se não estiver com a vida zerada
-                        // e o vampiro utiliza uma habilidade
-                        if (e.getVida() > 0) {
-                            if (e.perk()) {
-                                e.setVida(e.getVida() + 3);
-                                e.setHabilidade(e.getHabilidade() - 1);
-                                System.out.println("O vampiro usou sua habilidade e se curou");
-                            } else {
-                                e.atacar(rand.nextInt(1, 10), p);
-                            }
-                        }
-
-                        // e logo em seguida é mostrado na tela os status de cada combatente
-                        System.out.println("==================================================");
-                        System.out.println("Player: " + p.getNome() + " | Vida: " + p.getVida());
-                        System.out.println("Nivel: " + p.getLevel() + "\n");
-                        System.out.println(e.toString());
-                        System.out.println("==================================================");
-
-                    } while (p.getVida() > 0 && e.getVida() > 0);
 
                     // exibir tela de morte
                     if (p.getVida() > e.getVida()) {
@@ -158,6 +98,29 @@ public class Jogo {
                         Vendedor vendedor = new Vendedor();
                         vendedor.venda(v, p);
 
+                    }
+
+                    if (fase == 2) {
+                        System.out.println("\nVocê vê algo brilhante a frente.....parece ser o fim da jornada");
+                        System.out.println("Deseja se curar ? ");
+                        String resposta = acao.next();
+                        if (resposta.toLowerCase().equals("sim") || resposta.toLowerCase().equals("s")) {
+                            p.curar(v);
+                        }
+
+                        System.out.println("Boa sorte!");
+                        Boss cao = new Boss("Cão", 200);
+
+                        int dano = rand.nextInt(v.getArma().getDano());
+                        p.setDtotal(dano + p.getDtotal());
+                        p.ataque((int) (dano + (dano * p.getForca())), cao);
+
+                        cao.cura();
+                        System.out.println("==================================================");
+                        System.out.println("Player: " + p.getNome() + " | Vida: " + p.getVida());
+                        System.out.println("Nivel: " + p.getLevel() + "\n");
+                        System.out.println(cao.toString());
+                        System.out.println("==================================================");
                     }
 
                 } while (p.getVida() > 0);
@@ -215,16 +178,88 @@ public class Jogo {
             return false;
         }
     }
+
+    public static void historia() {
+        System.out.println("Bem vindo viajante!");
+        System.out.println("A filha de um pastor de ovelhas foi sequestrada e levada para uma caverna misteriosa");
+        System.out.println("E você foi contratado(a) para resgata-la com vida.");
+    }
+
+    public static void combate(Player p, Enemy e, Inventario v, Scanner acao, Random rand, int habilidade) {
+        // loop para combate
+        do {
+
+            // menu de combate
+            System.out.println("--------------------Ações--------------------");
+            System.out.println("[1] atacar [2] curar [3] Inventario [4]Habilidade");
+
+            int ac = acao.nextInt();
+
+            // seleciono as acoes do player
+            switch (ac) {
+                case 1:
+                    int dano = rand.nextInt(v.getArma().getDano());
+                    p.setDtotal(dano + p.getDtotal());
+                    p.ataque((int) (dano + (dano * p.getForca())), e);
+                    break;
+
+                case 2:
+                    p.curar(v);
+                    break;
+
+                case 3:
+                    v.Acessar(p);
+                    continue;
+
+                case 4:
+                    if (p.getHabilidade() >= 1) {
+                        if (habilidade == 1) {
+                            p.berserk(e, v);
+                        } else {
+                            if (habilidade == 2) {
+                                p.heimdall();
+                            }
+                        }
+                    } else {
+                        System.out.println("Você não tem pontos de habilidade para consumir");
+                    }
+                    break;
+
+                default:
+                    System.out.println("Este valor não existe e sua rodada foi perdida");
+
+            }
+
+            // inimigo ataca se não estiver com a vida zerada
+            // e o vampiro utiliza uma habilidade
+            if (e.getVida() > 0) {
+                if (e.perk()) {
+                    e.setVida(e.getVida() + 3);
+                    e.setHabilidade(e.getHabilidade() - 1);
+                    System.out.println("O vampiro usou sua habilidade e se curou");
+                } else {
+                    e.atacar(rand.nextInt(1, 10), p);
+                }
+            }
+
+            // e logo em seguida é mostrado na tela os status de cada combatente
+            System.out.println("==================================================");
+            System.out.println("Player: " + p.getNome() + " | Vida: " + p.getVida());
+            System.out.println("Nivel: " + p.getLevel() + "\n");
+            System.out.println(e.toString());
+            System.out.println("==================================================");
+
+        } while (p.getVida() > 0 && e.getVida() > 0);
+    }
 }
 
-// Definir quando o player sobe de level, porque isso está bastante indefinido
+
+//fazer o loop do boss final, e outros metodos adicionais para ele
 // preciso verificar os trys e catchs do sistema, coloquei o loop todo do game
 // em um try.
-// sistema de level aumentar força que vai aumentar o dano normal e aumentar
-// vida fixa
-// os aumentos de força e vida não mudam nada nas habilidades
 // fazer um boss final
 // fazer uma historia melhor
 // melhorar o estilo tenho esses dois links do github
 // que geram tabelas em java https://github.com/vdmeer/asciitable
 // https://github.com/JakeWharton/picnic
+// adicionar ao score xp e level alcançado

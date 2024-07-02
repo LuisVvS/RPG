@@ -9,9 +9,9 @@ public class Player {
     protected int habilidade = 1;
     protected double forca, saude;
 
-    public Player(String nome, int level, int vida) {
+    public Player(String nome, int vida) {
         this.nome = nome;
-        this.level = level;
+        this.level = 0;
         this.vida = vida;
         this.vmax = vida;
     }
