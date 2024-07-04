@@ -24,7 +24,7 @@ public class Armas {
     public int getDano() {
         return dano;
     }
-
+    //utilizo para mostrar a descrição da arma no invetario
     public String toString() {
         return "\nA descrição de item : " + 
         "\nNome: " +  this.nome 
