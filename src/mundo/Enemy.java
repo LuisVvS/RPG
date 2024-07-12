@@ -4,11 +4,11 @@ import java.util.*;
 
 import java.io.*;
 
-public class Enemy extends Player {
+public class Enemy extends Player{
     
     protected int habilidade;
     public Enemy(String nome, int vida) {
-        super(nome, vida);
+        super(nome,vida);
         vmax = vida;
         habilidade=3;
     }
@@ -25,7 +25,7 @@ public class Enemy extends Player {
         return vida;
     }
     //recebo um dano e um player por paremetro
-    public void atacar(int d, Player n) {
+    public void ataque(int d, Player n) {
         System.out.printf("O %s está atacando e causou %d de dano \n", this.nome, d);
         //tiro a vida do player conforme o dano
         n.setVida(n.getVida() - d);

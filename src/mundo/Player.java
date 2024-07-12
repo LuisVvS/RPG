@@ -3,9 +3,9 @@ package mundo;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Player {
+public class Player extends Metodos {
     protected String nome;
-    protected int level, vida, vmax, dtotal, xp, moeda = 30;
+    protected int level, vida, vmax, dtotal, xp, moeda = 10;
     protected int habilidade = 1;
     protected double forca, saude;
 
@@ -15,12 +15,28 @@ public class Player {
         this.vida = vida;
         this.vmax = vida;
     }
-    //ataco o adversario
-    public void ataque(int d, Enemy n) {
+
+    // ataco o adversario
+    public void ataque(Inventario v, Enemy n) {
+        // gero um numero aleatorio entre 0 e o dano da arma que está no inventario do
+        // player
+        // int dano = rand.nextInt(v.getArma().getDano());
+        int dano = 10;
+
+        // multiplico o dano pela forca e somo mais o dano dado pelo player
+        // transformo em inteiro porque ele retorna double e o metodo ataque() aceita
+        // inteiro
+        int d = (int) (dano + (dano * this.getForca()));
+
+        // pego o dano e somo ao dano total para mostrar no score
+        this.setDtotal(d + this.getDtotal());
+
         System.out.printf("O player %s está atacando e causou %d de dano \n", this.nome, d);
-        //seto a vida do meu inimigo como a vida dele menos o dano que foi gerado e recebido por parametro
+        // seto a vida do meu inimigo como a vida dele menos o dano que foi gerado e
+        // recebido por parametro
         n.setVida(n.getVida() - d);
-        //o if abaixo evita que a vida fique negativa, porque quando ela fica abaixo de 0 eu seto para 0
+        // o if abaixo evita que a vida fique negativa, porque quando ela fica abaixo de
+        // 0 eu seto para 0
         if (n.getVida() < 0) {
             n.setVida(0);
         }
@@ -40,7 +56,8 @@ public class Player {
             System.out.println("O player não tem pocoes para se curar! \n pocoes podem ser compradas com mercadores");
         }
     }
-    //mostro a tela de morte caso a vida do player esteja negativa ou igual a 0
+
+    // mostro a tela de morte caso a vida do player esteja negativa ou igual a 0
     public String tela() {
         if (this.vida <= 0) {
             return "\n///////\n"
@@ -50,13 +67,19 @@ public class Player {
             return "";
         }
     }
-    //mostro o score como o nome, o total de fases passadas (recebida por parametro)  e o dano total aplicado
+
+    // mostro o score como o nome, o total de fases passadas (recebida por
+    // parametro) e o dano total aplicado
     public String score(int x) {
         return "\nScore do Player: " + this.nome + "\n" +
                 "______________________\n" +
                 "-fases passadas: " + x + "\n" +
                 "______________________\n" +
                 "-dano : " + this.dtotal + "\n" +
+                "__________________\n" +
+                "-Xp acumulados: " + this.xp + "\n" +
+                "__________________\n" +
+                "-Levels: " + this.level + "\n" +
                 "__________________\n";
     }
 
@@ -95,8 +118,8 @@ public class Player {
                 // mostro a saude e a força antes
                 System.out.println("Sua força antes: " + this.forca);
                 System.out.println("Sua saude antes: " + this.saude);
-                //aumento força e saude
-                //uso double para conseguir multiplicar a forca com o ataque e dar mais dano
+                // aumento força e saude
+                // uso double para conseguir multiplicar a forca com o ataque e dar mais dano
                 // a medida que minha forca aumenta
                 this.saude += 0.05;
                 this.forca += 0.2;
@@ -114,9 +137,9 @@ public class Player {
                     // mostro a saude e a força depois
                     System.out.println("Sua força atual: " + this.forca);
                     System.out.println("Sua saude atual: " + this.saude);
-                    //aumento a vida em porcentagem da vida max 
+                    // aumento a vida em porcentagem da vida max
                     this.vida += this.vmax * this.saude;
-                    //aumento a vida maxima para que o player possa curar até o a vida aumentada
+                    // aumento a vida maxima para que o player possa curar até o a vida aumentada
                     this.vmax += this.vmax * this.saude;
                 }
             }
@@ -129,8 +152,16 @@ public class Player {
         // dano dela mesma
         try {
             int berserk = v.getArma().getDano() + (v.getArma().getDano() / 2);
-            // ataco o inimigo
-            this.ataque(berserk, e);
+            System.out.printf("O player %s está atacando e causou %d de dano \n", this.nome, berserk);
+            e.setVida(e.getVida() - berserk);
+
+            // pego o dano e somo ao dano total para mostrar no score
+            this.setDtotal(berserk + this.getDtotal());
+
+            if (e.getVida() < 0) {
+                e.setVida(0);
+            }
+
             // diminuo a habilidade dele
             this.setHabilidade(this.getHabilidade() - 1);
         } catch (InputMismatchException y) {
@@ -151,7 +182,8 @@ public class Player {
         }
 
     }
-    //getters e settes
+
+    // getters e settes
     public void setMoeda(int moeda) {
         this.moeda = moeda;
     }
