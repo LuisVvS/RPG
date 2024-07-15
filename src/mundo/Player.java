@@ -1,7 +1,6 @@
 package mundo;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class Player extends Metodos {
     protected String nome;
@@ -18,10 +17,10 @@ public class Player extends Metodos {
 
     // ataco o adversario
     public void ataque(Inventario v, Enemy n) {
+        Random rand = new Random();
         // gero um numero aleatorio entre 0 e o dano da arma que está no inventario do
         // player
-        // int dano = rand.nextInt(v.getArma().getDano());
-        int dano = 10;
+        int dano = rand.nextInt(6,v.getArma().getDano());
 
         // multiplico o dano pela forca e somo mais o dano dado pelo player
         // transformo em inteiro porque ele retorna double e o metodo ataque() aceita

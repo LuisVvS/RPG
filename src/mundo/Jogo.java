@@ -95,7 +95,7 @@ public class Jogo {
 
                 }
                 // quando chega a fase 15 eu aciono o boss
-                if (fase == 15) {
+                if (fase == 3) {
                     System.out.println("\nVocê vê algo brilhante a frente.....parece ser o fim da jornada");
                     System.out.println("Deseja se curar ? ");
                     // caso a resposta do player seja sim ele se cura caso contrario ele só continua
@@ -173,7 +173,10 @@ public class Jogo {
                         System.out.println("==================================================");
                         // loop funciona enquanto o player ou o cao estiverem com vida
                     } while (p.getVida() > 0 && cao.getVida() > 0);
-                    System.out.println("O Cão foi morto para sempre, e agora os Baskerville terão paz.");
+                    if (cao.getVida() <= 0) {
+                        System.out.println("O Cão foi morto para sempre, e agora os Baskerville terão paz.");
+                    }
+
                     break;
                 }
 
@@ -247,10 +250,10 @@ public class Jogo {
         List<Armas> armas = new ArrayList<Armas>() {
             {
                 add(new Armas("Espada Negra", 11));
-                add(new Armas("Cajado de Maiar", 20));
+                add(new Armas("Cajado de Maiar", 15));
                 add(new Armas("Arco de Valar", 7));
-                add(new Armas("Machado do Khazad", 11));
-                add(new Armas("Foice com Corrente", 13));
+                add(new Armas("Machado do Khazad", 13));
+                add(new Armas("Foice com Corrente", 11));
             }
         };
 
@@ -282,12 +285,12 @@ public class Jogo {
                     return p;
                 } else {
                     if (rar == 4) {
-                        Player p = new Anao(n, 30);
+                        Player p = new Anao(n, 27);
                         v.setArma(armas.get(rar - 1));
                         return p;
                     } else {
                         if (rar == 5) {
-                            Player p = new Anao(n, 30);
+                            Player p = new Ogro(n, 30);
                             v.setArma(armas.get(rar - 1));
                             return p;
                         } else {
@@ -375,6 +378,6 @@ public class Jogo {
 }
 
 // adicionar classes no RPG (ogro)
-//verificar os try e catch
-//testar o programa
+// verificar os try e catch
+// testar o programa
 // fazer uma historia melhor

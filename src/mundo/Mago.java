@@ -1,6 +1,6 @@
 package mundo;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Mago extends Player {
 
@@ -11,13 +11,16 @@ public class Mago extends Player {
   @Override
   public void ataque(Inventario v, Enemy n) {
     int d = 0;
+    Random rand = new Random();
     Scanner dd = new Scanner(System.in);
-
     System.out.println("[1] Bola de Fogo | [2] Raio");
     int dan = dd.nextInt();
 
     if (dan == 1) {
-      d += (int) 10 + (10 * this.getForca());
+      
+      int dano = rand.nextInt(5,10);
+
+      d += (int) dano + (dano * this.getForca());
       n.setVida(n.getVida() - d);
       // o if abaixo evita que a vida fique negativa, porque quando ela fica abaixo de
       // 0 eu seto para 0
@@ -25,7 +28,10 @@ public class Mago extends Player {
         n.setVida(0);
       }
     } else {
-      d += (int) 7 + (7 * this.getForca());
+
+      int dano = rand.nextInt(3,7);
+
+      d += (int) dano + (dano * this.getForca());
       if (dan == 2) {
         n.setVida(n.getVida() - d);
         // o if abaixo evita que a vida fique negativa, porque quando ela fica abaixo de
