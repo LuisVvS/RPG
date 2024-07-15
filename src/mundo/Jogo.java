@@ -377,7 +377,8 @@ public class Jogo {
     }
 }
 
-// adicionar classes no RPG (ogro)
+//se o player escolher nao jogar, ele continua do mesmo jeito, resolver isso
+//desenvolver habilidades individuais para cada personagem
 // verificar os try e catch
 // testar o programa
 // fazer uma historia melhor
