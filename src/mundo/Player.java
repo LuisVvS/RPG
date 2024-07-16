@@ -20,7 +20,7 @@ public class Player extends Metodos {
         Random rand = new Random();
         // gero um numero aleatorio entre 0 e o dano da arma que está no inventario do
         // player
-        int dano = rand.nextInt(6,v.getArma().getDano());
+        int dano = rand.nextInt(6, v.getArma().getDano());
 
         // multiplico o dano pela forca e somo mais o dano dado pelo player
         // transformo em inteiro porque ele retorna double e o metodo ataque() aceita
@@ -145,8 +145,27 @@ public class Player extends Metodos {
         }
     }
 
+    public int setarHabilidade() {
+        Scanner acao = new Scanner(System.in);
+        int habilidade;
+
+        do {
+            System.out.println("Qual a habilidade você vai querer? ");
+            System.out.println("-1- Berserk ");
+            System.out.println(
+                    "Berserk: Ao ativar esta habilidade, o player da o dano total da sua arma, mais metade do dano total");
+            System.out.println("-2- Heimdall ");
+            System.out.println(
+                    "Heimdall: Ao ativar esta habilidade o player adiciona 20 de proteção a sua vida.");
+            habilidade = acao.nextInt();
+
+        } while (habilidade != 1 && habilidade != 2);
+        return habilidade;
+
+    }
+
     // habilidade
-    public void berserk(Enemy e, Inventario v) {
+    public void Habilidade1(Enemy e, Inventario v) {
         // try na tentativa de gerar um ataque pegando o dano da arma e somando + 50% do
         // dano dela mesma
         try {
@@ -168,7 +187,7 @@ public class Player extends Metodos {
         }
     }
 
-    public void heimdall() {
+    public void Habilidade2(Enemy e) {
         // try na tentativa de aumentar a vida do usuario, em mais 20 (tipo uma
         // proteção)
         try {

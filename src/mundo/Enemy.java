@@ -26,6 +26,7 @@ public class Enemy extends Player{
     }
     //recebo um dano e um player por paremetro
     public void ataque(int d, Player n) {
+        this.dtotal+=d;
         System.out.printf("O %s está atacando e causou %d de dano \n", this.nome, d);
         //tiro a vida do player conforme o dano
         n.setVida(n.getVida() - d);
