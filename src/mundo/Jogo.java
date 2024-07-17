@@ -23,171 +23,161 @@ public class Jogo {
 
         // exibir a funcao menu
         try {
-            if (menu())
+            if (menu()) {
                 // exibe breve historia sobre o jogo
                 historia();
-            Player p = Criacao(v);
-            int fase = 1;
+                Player p = Criacao(v);
+                int fase = 1;
 
-            // começo o loop até ele escolher uma opção ou o sistema pegar alguma execção
-            do {
-                System.out.println("Qual a habilidade você vai querer? ");
-                System.out.println("-1- Berserk ");
-                System.out.println(
-                        "Berserk: Ao ativar esta habilidade, o player da o dano total da sua arma, mais metade do dano total");
-                System.out.println("-2- Heimdall");
-                System.out.println(
-                        "Heimdall: Ao ativar esta habilidade o player adiciona 20 de proteção a sua vida.");
-                habilidade = acao.nextInt();
+                // começo o loop até ele escolher uma opção ou o sistema pegar alguma execção
+                habilidade = p.setarHabilidade();
+                // loop de fase
+                do {
+                    // pego um inimigo aleatorio da arraylist
+                    Enemy e = nomes.get(rand.nextInt(nomes.size()));
 
-            } while (habilidade != 1 && habilidade != 2);
+                    // reiniciando o adversario para que ele apareca nas fases posteriores
+                    e.reiniciar();
 
-            // loop de fase
-            do {
-                // pego um inimigo aleatorio da arraylist
-                Enemy e = nomes.get(rand.nextInt(nomes.size()));
+                    System.out.println(">>>>>> level: " + fase + " <<<<<<");
+                    System.out.println("--------------------------------------------");
+                    System.out.println("\n>> Um " + e.nome + " apareceu na sua frente <<\n");
 
-                // reiniciando o adversario para que ele apareca nas fases posteriores
-                e.reiniciar();
+                    // combate
+                    combate(p, e, v, acao, rand, habilidade);
 
-                System.out.println(">>>>>> level: " + fase + " <<<<<<");
-                System.out.println("--------------------------------------------");
-                System.out.println("\n>> Um " + e.nome + " apareceu na sua frente <<\n");
+                    // exibir tela de morte
+                    if (p.getVida() > e.getVida()) {
+                        // Adicionar moedas a cada morte de monstro
+                        // geto uma moeda entre 1 a 5
+                        int mod = rand.nextInt(1, 5);
+                        System.out.println("Você ganhou " + mod + " moedas!");
+                        // e passo essa moeda gerada e guardada na variavel mod pelo setmoeda
+                        p.setMoeda(p.getMoeda() + mod);
 
-                // combate
-                combate(p, e, v, acao, rand, habilidade);
+                        // gero um xp entre 2 e 4
+                        int xp = rand.nextInt(2, 4);
+                        System.out.println("Você ganhou " + xp + " de xp");
+                        // seto o xp para o usuario
+                        p.setXP(p.getXP() + xp);
+                        // chamo a função de subir de nivel
+                        p.levelup();
 
-                // exibir tela de morte
-                if (p.getVida() > e.getVida()) {
-                    // Adicionar moedas a cada morte de monstro
-                    // geto uma moeda entre 1 a 5
-                    int mod = rand.nextInt(1, 5);
-                    System.out.println("Você ganhou " + mod + " moedas!");
-                    // e passo essa moeda gerada e guardada na variavel mod pelo setmoeda
-                    p.setMoeda(p.getMoeda() + mod);
-
-                    // gero um xp entre 2 e 4
-                    int xp = rand.nextInt(2, 4);
-                    System.out.println("Você ganhou " + xp + " de xp");
-                    // seto o xp para o usuario
-                    p.setXP(p.getXP() + xp);
-                    // chamo a função de subir de nivel
-                    p.levelup();
-
-                    System.out.println(e.tela());
-                } else {
-                    System.out.println(p.tela());
-                }
-
-                // exibir perguta de proxima fase
-                if (e.getVida() <= 0) {
-                    if (continuar()) {
-                        fase += 1;
+                        System.out.println(e.tela());
                     } else {
+                        System.out.println(p.tela());
+                    }
+
+                    // exibir perguta de proxima fase
+                    if (e.getVida() <= 0) {
+                        if (continuar()) {
+                            fase += 1;
+                        } else {
+                            break;
+                        }
+                    }
+
+                    // ceritifica que o vendedor apareca a cada 5 fases
+                    if (fase % 5 == 0 && p.getVida() > 0) {
+                        Vendedor vendedor = new Vendedor();
+                        vendedor.venda(v, p);
+
+                    }
+                    // quando chega a fase 15 eu aciono o boss
+                    if (fase == 3) {
+                        System.out.println("\nVocê vê algo brilhante a frente.....parece ser o fim da jornada");
+                        System.out.println("Deseja se curar ? ");
+                        // caso a resposta do player seja sim ele se cura caso contrario ele só continua
+                        // no caminho
+                        String resposta = acao.next();
+                        if (resposta.toLowerCase().equals("sim") || resposta.toLowerCase().equals("s")) {
+                            System.out.println("Você se sente mais forte, e alguma coisa te enche o espirito");
+                            p.curar(v);
+                            System.out.println("Estranho...");
+                        }
+
+                        System.out.println("Boa sorte!");
+                        Boss cao = new Boss("Cão", 20);
+
+                        // loop para combate
+                        do {
+
+                            // menu de combate
+                            System.out.println("--------------------Ações--------------------");
+                            System.out.println("[1] atacar [2] curar [3] Inventario [4]Habilidade");
+
+                            int ac = acao.nextInt();
+
+                            // seleciono as acoes do player
+                            switch (ac) {
+                                case 1:
+
+                                    p.ataque(v, cao);
+                                    break;
+
+                                case 2:
+                                    // curo o player pelas poções no inv
+                                    p.curar(v);
+                                    break;
+
+                                case 3:
+                                    // acesso o inventario e selecionei o continue para que o player pudesse
+                                    // continuar na batalha sem tomar dano ao acessar o inv
+                                    v.Acessar(p);
+                                    continue;
+
+                                case 4:
+                                    // aciono as habilidades do player caso ele tenha pontos verifico qual ele
+                                    // escolheu e aciono elas
+                                    if (p.getHabilidade() >= 1) {
+                                        if (habilidade == 1) {
+                                            p.Habilidade1(e, v);
+                                        } else {
+                                            if (habilidade == 2) {
+                                                p.Habilidade2(e);
+                                            }
+                                        }
+                                    } else {
+                                        System.out.println("Você não tem pontos de habilidade para consumir");
+                                    }
+                                    break;
+
+                                default:
+                                    System.out.println("Este valor não existe e sua rodada foi perdida");
+
+                            }
+
+                            // inimigo ataca se não estiver com a vida zerada
+                            if (cao.getVida() > 0) {
+                                cao.atacar(p);
+                                cao.cura();
+                                cao.especial(p);
+                            }
+
+                            // e logo em seguida é mostrado na tela os status de cada combatente
+                            System.out.println("==================================================");
+                            System.out.println("Player: " + p.getNome() + " | Vida: " + p.getVida());
+                            System.out.println("Nivel: " + p.getLevel() + "\n");
+                            System.out.println(cao.toString());
+                            System.out.println("==================================================");
+                            // loop funciona enquanto o player ou o cao estiverem com vida
+                        } while (p.getVida() > 0 && cao.getVida() > 0);
+                        if (cao.getVida() <= 0) {
+                            System.out.println("O Cão foi morto para sempre, e agora os Baskerville terão paz.");
+                        }
+
                         break;
                     }
-                }
 
-                // ceritifica que o vendedor apareca a cada 5 fases
-                if (fase % 5 == 0 && p.getVida() > 0) {
-                    Vendedor vendedor = new Vendedor();
-                    vendedor.venda(v, p);
+                } while (p.getVida() > 0);
+                // fase termina acima
+                // mostra score do player
+                System.out.println(p.score(fase - 1));
 
-                }
-                // quando chega a fase 15 eu aciono o boss
-                if (fase == 3) {
-                    System.out.println("\nVocê vê algo brilhante a frente.....parece ser o fim da jornada");
-                    System.out.println("Deseja se curar ? ");
-                    // caso a resposta do player seja sim ele se cura caso contrario ele só continua
-                    // no caminho
-                    String resposta = acao.next();
-                    if (resposta.toLowerCase().equals("sim") || resposta.toLowerCase().equals("s")) {
-                        System.out.println("Você se sente mais forte, e alguma coisa te enche o espirito");
-                        p.curar(v);
-                        System.out.println("Estranho...");
-                    }
+                System.out.println("Obrigado por jogar :)");
+                acao.close();
 
-                    System.out.println("Boa sorte!");
-                    Boss cao = new Boss("Cão", 20);
-
-                    // loop para combate
-                    do {
-
-                        // menu de combate
-                        System.out.println("--------------------Ações--------------------");
-                        System.out.println("[1] atacar [2] curar [3] Inventario [4]Habilidade");
-
-                        int ac = acao.nextInt();
-
-                        // seleciono as acoes do player
-                        switch (ac) {
-                            case 1:
-
-                                p.ataque(v, cao);
-                                break;
-
-                            case 2:
-                                // curo o player pelas poções no inv
-                                p.curar(v);
-                                break;
-
-                            case 3:
-                                // acesso o inventario e selecionei o continue para que o player pudesse
-                                // continuar na batalha sem tomar dano ao acessar o inv
-                                v.Acessar(p);
-                                continue;
-
-                            case 4:
-                                // aciono as habilidades do player caso ele tenha pontos verifico qual ele
-                                // escolheu e aciono elas
-                                if (p.getHabilidade() >= 1) {
-                                    if (habilidade == 1) {
-                                        p.berserk(cao, v);
-                                    } else {
-                                        if (habilidade == 2) {
-                                            p.heimdall();
-                                        }
-                                    }
-                                } else {
-                                    System.out.println("Você não tem pontos de habilidade para consumir");
-                                }
-                                break;
-
-                            default:
-                                System.out.println("Este valor não existe e sua rodada foi perdida");
-
-                        }
-
-                        // inimigo ataca se não estiver com a vida zerada
-                        if (cao.getVida() > 0) {
-                            cao.atacar(p);
-                            cao.cura();
-                            cao.especial(p);
-                        }
-
-                        // e logo em seguida é mostrado na tela os status de cada combatente
-                        System.out.println("==================================================");
-                        System.out.println("Player: " + p.getNome() + " | Vida: " + p.getVida());
-                        System.out.println("Nivel: " + p.getLevel() + "\n");
-                        System.out.println(cao.toString());
-                        System.out.println("==================================================");
-                        // loop funciona enquanto o player ou o cao estiverem com vida
-                    } while (p.getVida() > 0 && cao.getVida() > 0);
-                    if (cao.getVida() <= 0) {
-                        System.out.println("O Cão foi morto para sempre, e agora os Baskerville terão paz.");
-                    }
-
-                    break;
-                }
-
-            } while (p.getVida() > 0);
-            // fase termina acima
-            // mostra score do player
-            System.out.println(p.score(fase - 1));
-
-            System.out.println("Obrigado por jogar :)");
-            acao.close();
-
+            }
         } catch (InputMismatchException e) {
             System.out.println("Não foi");
         }
@@ -338,10 +328,10 @@ public class Jogo {
                     // escolheu e aciono elas
                     if (p.getHabilidade() >= 1) {
                         if (habilidade == 1) {
-                            p.berserk(e, v);
+                            p.Habilidade1(e, v);
                         } else {
                             if (habilidade == 2) {
-                                p.heimdall();
+                                p.Habilidade2(e);
                             }
                         }
                     } else {
@@ -377,8 +367,8 @@ public class Jogo {
     }
 }
 
-//se o player escolher nao jogar, ele continua do mesmo jeito, resolver isso
-//desenvolver habilidades individuais para cada personagem
+// se o player escolher nao jogar, ele continua do mesmo jeito, resolver isso
+// desenvolver habilidades individuais para cada personagem
 // verificar os try e catch
 // testar o programa
 // fazer uma historia melhor
