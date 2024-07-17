@@ -39,6 +39,7 @@ public class Enemy extends Player{
     public void reiniciar() {
         this.vida = vmax;
         this.habilidade += 3;
+        this.dtotal=0;
     }
 
     @Override

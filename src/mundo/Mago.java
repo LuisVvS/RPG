@@ -90,11 +90,19 @@ public class Mago extends Player {
   }
 
   @Override
-  public void Habilidade2(Enemy e) {
+  public void Habilidade2(Enemy e, Inventario v) {
     // O player fica imune por dois turnos aos ataques do adversario
     try {
       e.setVida(e.getVida() - e.getDtotal());
       System.out.printf("O Player %s Devolveu %d: ", this.nome, e.getDtotal());
+
+      // pego o dano e somo ao dano total para mostrar no score
+      this.setDtotal(e.getDtotal() + this.getDtotal());
+
+      if (e.getVida() < 0) {
+        e.setVida(0);
+      }
+
     } catch (InputMismatchException y) {
       System.out.println();
     }

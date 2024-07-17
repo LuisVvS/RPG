@@ -21,7 +21,6 @@ public class Player extends Metodos {
         // gero um numero aleatorio entre 0 e o dano da arma que está no inventario do
         // player
         int dano = rand.nextInt(6, v.getArma().getDano());
-
         // multiplico o dano pela forca e somo mais o dano dado pelo player
         // transformo em inteiro porque ele retorna double e o metodo ataque() aceita
         // inteiro
@@ -170,11 +169,14 @@ public class Player extends Metodos {
         // dano dela mesma
         try {
             int berserk = v.getArma().getDano() + (v.getArma().getDano() / 2);
-            System.out.printf("O player %s está atacando e causou %d de dano \n", this.nome, berserk);
-            e.setVida(e.getVida() - berserk);
+
+            int d = (int) (berserk + (berserk * this.getForca()));
+
+            System.out.printf("O player %s está atacando e causou %d de dano \n", this.nome, d);
+            e.setVida(e.getVida() - d);
 
             // pego o dano e somo ao dano total para mostrar no score
-            this.setDtotal(berserk + this.getDtotal());
+            this.setDtotal(d + this.getDtotal());
 
             if (e.getVida() < 0) {
                 e.setVida(0);
@@ -187,7 +189,7 @@ public class Player extends Metodos {
         }
     }
 
-    public void Habilidade2(Enemy e) {
+    public void Habilidade2(Enemy e, Inventario v) {
         // try na tentativa de aumentar a vida do usuario, em mais 20 (tipo uma
         // proteção)
         try {
