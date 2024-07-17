@@ -84,7 +84,7 @@ public class Jogo {
 
                     }
                     // quando chega a fase 15 eu aciono o boss
-                    if (fase == 3) {
+                    if (fase == 15) {
                         System.out.println("\nVocê vê algo brilhante a frente.....parece ser o fim da jornada");
                         System.out.println("Deseja se curar ? ");
                         // caso a resposta do player seja sim ele se cura caso contrario ele só continua
@@ -134,7 +134,7 @@ public class Jogo {
                                             p.Habilidade1(e, v);
                                         } else {
                                             if (habilidade == 2) {
-                                                p.Habilidade2(e);
+                                                p.Habilidade2(e, v);
                                             }
                                         }
                                     } else {
@@ -331,7 +331,7 @@ public class Jogo {
                             p.Habilidade1(e, v);
                         } else {
                             if (habilidade == 2) {
-                                p.Habilidade2(e);
+                                p.Habilidade2(e, v);
                             }
                         }
                     } else {
@@ -367,8 +367,10 @@ public class Jogo {
     }
 }
 
-// se o player escolher nao jogar, ele continua do mesmo jeito, resolver isso
-// desenvolver habilidades individuais para cada personagem
+//quando eu gasto os pontos de habilidade do elfo, na saeth uchafswm, a habilidade fica em -1
+//arrumar isso
+//habilidade armadura arcana do mago nao esta funcionando no boss
+//devensolver habilidade do ogro 
 // verificar os try e catch
 // testar o programa
 // fazer uma historia melhor
