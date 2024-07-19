@@ -2,7 +2,7 @@ package mundo;
 
 import java.util.*;
 
-public class Player extends Metodos {
+public class Player {
     protected String nome;
     protected int level, vida, vmax, dtotal, xp, moeda = 10;
     protected int habilidade = 1;

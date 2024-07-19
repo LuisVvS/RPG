@@ -26,6 +26,9 @@ public class Jogo {
             if (menu()) {
                 // exibe breve historia sobre o jogo
                 historia();
+                // crio o boss
+                Boss cao = new Boss("Cão", 20);
+                // crio o player
                 Player p = Criacao(v);
                 int fase = 1;
 
@@ -84,7 +87,7 @@ public class Jogo {
 
                     }
                     // quando chega a fase 15 eu aciono o boss
-                    if (fase == 15) {
+                    if (fase == 3) {
                         System.out.println("\nVocê vê algo brilhante a frente.....parece ser o fim da jornada");
                         System.out.println("Deseja se curar ? ");
                         // caso a resposta do player seja sim ele se cura caso contrario ele só continua
@@ -97,7 +100,6 @@ public class Jogo {
                         }
 
                         System.out.println("Boa sorte!");
-                        Boss cao = new Boss("Cão", 20);
 
                         // loop para combate
                         do {
@@ -131,7 +133,7 @@ public class Jogo {
                                     // escolheu e aciono elas
                                     if (p.getHabilidade() >= 1) {
                                         if (habilidade == 1) {
-                                            p.Habilidade1(e, v);
+                                            p.Habilidade1(cao, v);
                                         } else {
                                             if (habilidade == 2) {
                                                 p.Habilidade2(e, v);
@@ -367,10 +369,6 @@ public class Jogo {
     }
 }
 
-//quando eu gasto os pontos de habilidade do elfo, na saeth uchafswm, a habilidade fica em -1
-//arrumar isso
-//habilidade armadura arcana do mago nao esta funcionando no boss
-//devensolver habilidade do ogro 
 // verificar os try e catch
 // testar o programa
 // fazer uma historia melhor

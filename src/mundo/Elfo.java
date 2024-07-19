@@ -50,23 +50,28 @@ public class Elfo extends Player {
     public void Habilidade1(Enemy e, Inventario v) {
         // try na tentativa de gerar um ataque pegando o dano da arma e somando + 50% do
         // dano dela mesma
-        try {
-            int perk = v.getArma().getDano() * 3;
-            System.out.printf("O player %s está atacando e causou %d de dano \n", this.nome, perk);
-            e.setVida(e.getVida() - perk);
+        if (this.getHabilidade() >= 2) {
+            try {
+                int perk = (v.getArma().getDano() * 3) + (int)(v.getArma().getDano() * this.getForca());
+                System.out.printf("O player %s está atacando e causou %d de dano \n", this.nome, perk);
+                e.setVida(e.getVida() - perk);
 
-            // pego o dano e somo ao dano total para mostrar no score
-            this.setDtotal(perk + this.getDtotal());
+                // pego o dano e somo ao dano total para mostrar no score
+                this.setDtotal(perk + this.getDtotal());
 
-            if (e.getVida() < 0) {
-                e.setVida(0);
+                if (e.getVida() < 0) {
+                    e.setVida(0);
+                }
+
+                // diminuo a habilidade dele
+                this.setHabilidade(this.getHabilidade() - 2);
+            } catch (InputMismatchException y) {
+                System.out.println();
             }
-
-            // diminuo a habilidade dele
-            this.setHabilidade(this.getHabilidade() - 2);
-        } catch (InputMismatchException y) {
-            System.out.println();
+        } else {
+            System.out.println("\nVocê não tem pontos de habilidade suficiente");
         }
+
     }
 
     @Override

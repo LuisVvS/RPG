@@ -30,6 +30,7 @@ public class Boss extends Enemy {
         int c = p.vmax / 2;
         // transformo os danos em numeros inteiros
         int dano = rand.nextInt((int) dan, (int) c);
+        this.dtotal+=dano;
 
         // avisa que o inimigo esta dando dano
         System.out.printf("O %s está atacando e causou %d de dano \n", this.nome, dano);
