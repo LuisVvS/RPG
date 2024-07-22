@@ -27,6 +27,7 @@ public class Player {
         int d = (int) (dano + (dano * this.getForca()));
 
         // pego o dano e somo ao dano total para mostrar no score
+        
         this.setDtotal(d + this.getDtotal());
 
         System.out.printf("O player %s está atacando e causou %d de dano \n", this.nome, d);

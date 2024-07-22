@@ -29,7 +29,7 @@ public class Mago extends Player {
       }
     } else {
 
-      int dano = rand.nextInt(3, 7);
+      int dano = rand.nextInt(4, 7);
 
       d += (int) dano + (dano * this.getForca());
       if (dan == 2) {

@@ -1,5 +1,6 @@
 package mundo;
 
+import java.nio.file.SecureDirectoryStream;
 import java.util.*;
 
 public class Jogo {
@@ -27,7 +28,7 @@ public class Jogo {
                 // exibe breve historia sobre o jogo
                 historia();
                 // crio o boss
-                Boss cao = new Boss("Cão", 20);
+                Boss cao = new Boss("Cão", 200);
                 // crio o player
                 Player p = Criacao(v);
                 int fase = 1;
@@ -87,7 +88,7 @@ public class Jogo {
 
                     }
                     // quando chega a fase 15 eu aciono o boss
-                    if (fase == 3) {
+                    if (fase == 30) {
                         System.out.println("\nVocê vê algo brilhante a frente.....parece ser o fim da jornada");
                         System.out.println("Deseja se curar ? ");
                         // caso a resposta do player seja sim ele se cura caso contrario ele só continua
@@ -181,7 +182,7 @@ public class Jogo {
 
             }
         } catch (InputMismatchException e) {
-            System.out.println("Não foi");
+            System.out.println("Este valor é invalido");
         }
     }
 
@@ -233,8 +234,17 @@ public class Jogo {
     public static void historia() {
         // historia
         System.out.println("Bem vindo viajante!");
-        System.out.println("A filha de um pastor de ovelhas foi sequestrada e levada para uma caverna misteriosa");
-        System.out.println("E você foi contratado(a) para resgata-la com vida.");
+        System.out.println("Você é acordado pelo capitão, que diz que vocês já estão chegando em Marabella. Ao longe, você avista a ilha se aproximando.");
+        System.out.print("À medida que a ilha cresce à vista, a razão pela qual você veio aqui também se torna mais evidente.\n");
+        System.out.println();
+        System.out.println("Você vê, ao longe, a sombria e imponente Mansão Baskerville. Existe uma lenda secular de que os Baskerville são amaldiçoados.");
+        System.out.print("A lenda fala de um grande cão que irá matar o herdeiro da casa dos Baskerville, como retribuição pelos pecados cometidos pela família no passado.\n");
+        System.out.println("Os acontecimentos recentes só alimentaram essa antiga lenda. O Sr. Henry Baskerville foi encontrado morto na porta de sua casa, mas não havia pegadas em nenhum lugar próximo ao corpo. ");
+        System.out.print("A única evidência encontrada foi a marca de uma garra gigante nas costas do Sr. Henry.\n");
+        System.out.println();
+        System.out.println("Com a morte do Sr. Henry, veio também o desaparecimento de seu filho, Coim Baskerville, que sumiu uma hora antes da morte de seu pai, sem deixar rastros. ");
+        System.out.print("Segundo alguns curiosos, ele só pode estar nas antigas masmorras.\n");
+        System.out.println("Sua missão é resgatar o filho do Sr. Henry com vida e matar o cão. Boa sorte!");
     }
 
     public static Player Criacao(Inventario v) {
@@ -251,7 +261,7 @@ public class Jogo {
 
         Scanner acao = new Scanner(System.in);
         // perguntar qual o nome do usuario
-        System.out.println("Qual o nome do seu usuario? ");
+        System.out.println("Qual o seu nome?");
         String n = acao.next();
         // cria player
         System.out.println("Certo " + n + " com qual raça você deseja jogar?");
@@ -368,7 +378,3 @@ public class Jogo {
         } while (p.getVida() > 0 && e.getVida() > 0);
     }
 }
-
-// verificar os try e catch
-// testar o programa
-// fazer uma historia melhor
